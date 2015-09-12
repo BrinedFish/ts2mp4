@@ -1,0 +1,2 @@
+command="/usr/bin/scp -t /home/jnakano/tmp/ts2mp4/ts",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa #paste pubkey here#
+command="/usr/bin/scp -t /home/jnakano/tmp/ts2mp4/queue",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-rsa #paste pubkey here#
