@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -x
+
 # $1: queue file
 
 cd $(dirname $0)/../
