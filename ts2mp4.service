@@ -1,0 +1,10 @@
+[Unit]
+Description=TS to MP4 converter
+
+[Service]
+ExecStart=/home/jnakano/tmp/ts2mp4/scripts/parallel.sh
+Restart=always
+User=jnakano
+
+[Install]
+WantedBy=multi-user.target
