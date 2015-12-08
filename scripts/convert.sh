@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -x
+set -e
 
 OUT_DIR=/home/hatsune/public_html/tv
 
@@ -13,6 +14,10 @@ TS_NAME=$(echo "$QUEUE_NAME" | sed -e s/\.queue$//)
 TMP_MP4_NAME=$(echo "$TS_NAME" | sed -e s/\.ts$/.mp4/)
 MP4_NAME=$(sed -n 1p "queue/$QUEUE_NAME" | sed -e s/\.ts$/.mp4/)
 PROGRAM_ID=$(sed -n 3p "queue/$QUEUE_NAME")
+TMP_OUT_DIR=$(sed -n 4p "queue/$QUEUE_NAME")
+if [ -n "$TMP_OUT_DIR" ]; then
+  OUT_DIR=$TMP_OUT_DIR
+fi
 
 if [ ${#PROGRAM_ID} -gt 0 ]; then
   PROGRAM_OPT_V="-map 0:p:${PROGRAM_ID}:0"
@@ -22,7 +27,7 @@ echo $PROGRAM_OPT_V
 echo $PROGRAM_OPT_A
 
 # ffmpeg -i 2015-09-12\ 00：00\ \[ディスカバリー\]名車再生\!AMCペーサー\(二\).ts -map 0:p:340:0 -c:v libx264 -map 0:p:340:1 -c:a libfdk_aac test.mp4
-/home/jnakano/ffmpeg/bin/ffmpeg -y -i "ts/$TS_NAME" $PROGRAM_OPT_V -c:v libx264 -preset veryfast -profile main -level 3.1 -s 1280x720 $PROGRAM_OPT_A -c:a libfdk_aac "mp4/$TMP_MP4_NAME"
+/home/jnakano/ffmpeg/bin/ffmpeg -loglevel warning -y -analyzeduration 80000000 -probesize 80000000 -i "ts/$TS_NAME" $PROGRAM_OPT_V -c:v libx264 -preset veryfast -filter:v yadif=1 -profile main -level 3.1 -s 1024x576 -b:v 3M $PROGRAM_OPT_A -c:a libfdk_aac "mp4/$TMP_MP4_NAME"
 chmod 777 "mp4/$TMP_MP4_NAME"
 mv "mp4/$TMP_MP4_NAME" "$OUT_DIR/$MP4_NAME"
 
